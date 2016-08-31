@@ -13,22 +13,28 @@ public class ParentFixedJoint : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Awake () {
+    
+
+	void Awake ()
+    {
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void FixedUpdate ()
+    {
 		device = SteamVR_Controller.Input ((int)trackedObj.index);
 
 
-		if(device.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad))
+		if(device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
 		{
-			Debug.Log ("Touchpad press up");
+			Debug.Log ("app menu press up");
 			print("reset scene");
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
-	}
+
+        
+    }
 
 	void OnTriggerStay(Collider col)
 	{
@@ -41,20 +47,21 @@ public class ParentFixedJoint : MonoBehaviour {
 			fixedJoint.connectedBody = rigidBodyAttachPoint;
 			//print ("fixedJoint attach point assigned");
 		}
-		else if((device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) || device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) && fixedJoint != null)
-		{
-			//print ("fixedJoint is not null and deviced realses touch");
+        else if (fixedJoint != null && (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) || device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)))
+        {
+            //print ("fixedJoint is not null and deviced realses touch");
 
-			Rigidbody rigidBody = fixedJoint.gameObject.GetComponent<Rigidbody> ();
-			Destroy (fixedJoint);
-			print ("fixedJoint destroyed");
-			fixedJoint = null;
+            Rigidbody rigidBody = fixedJoint.gameObject.GetComponent<Rigidbody>();
+            Destroy(fixedJoint);
+            print("fixedJoint destroyed");
+            fixedJoint = null;
 
-			tossObject (rigidBody) ;
-			print ("tossing object");
+            tossObject(rigidBody);
+            print("tossing object");
 
-		}
-	}
+        }
+
+    }
 
 	void tossObject(Rigidbody rigidBody)
 	{
@@ -70,6 +77,6 @@ public class ParentFixedJoint : MonoBehaviour {
 			rigidBody.angularVelocity = device.angularVelocity;
 		}
 
-		rigidBody.maxAngularVelocity = rigidBody.angularVelocity.magnitude;
+		rigidBody.maxAngularVelocity = rigidBody.angularVelocity.magnitude * 0.3f;
 	}
 }

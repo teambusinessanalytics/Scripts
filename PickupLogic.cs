@@ -2,8 +2,10 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using VRTK;
 
-public class PickupLogic : MonoBehaviour {
+public class PickupLogic : MonoBehaviour
+{
     public Material GazedMaterial;
     protected Material[] OriginalMatrials;
     protected GameObject Pickup;
