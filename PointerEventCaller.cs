@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Events;
 using VRTK;
+using UnityEngine.SceneManagement;
 
 public class PointerEventCaller : MonoBehaviour {
 
@@ -17,6 +18,7 @@ public class PointerEventCaller : MonoBehaviour {
     {
         simplePointer = GetComponent<VRTK_SimplePointer>();
         controllerEvents = GetComponent<VRTK_ControllerEvents>();
+        trackedObj = GetComponent<SteamVR_TrackedObject>();
     }
 
     void OnEnable()
@@ -33,7 +35,15 @@ public class PointerEventCaller : MonoBehaviour {
 
     void FixedUpdate()
     {
+        device = SteamVR_Controller.Input((int)trackedObj.index);
 
+
+        if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        {
+            Debug.Log("app menu press up");
+            print("reset scene");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
 

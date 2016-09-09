@@ -3,8 +3,9 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Threading;
+using VRTK;
 
-public class se_cube : MonoBehaviour
+public class se_cube : VRTK_InteractableObject
 {
 
     public string scene;
@@ -52,7 +53,7 @@ public class se_cube : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     void Update()
