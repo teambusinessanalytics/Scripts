@@ -31,13 +31,13 @@ public class ExhibitorLogic : PickupLogic
             {
                 print(SpeechAudioSource.clip.name + " playing...");
                 //print("volume turned down to: " + originalMusicVolume.ToString());
-                GameObject.FindObjectOfType<EventSystem>().enabled = false;
+                //GameObject.FindObjectOfType<EventSystem>().enabled = false;
                 if (BackgroundMusicSource.volume > .05f) BackgroundMusicSource.volume -= .5f * Time.deltaTime;
             }
             else if (!SpeechAudioSource.isPlaying)
             {
                 print(SpeechAudioSource.clip.name + " not playing...");
-                GameObject.FindObjectOfType<EventSystem>().enabled = true;
+                //GameObject.FindObjectOfType<EventSystem>().enabled = true;
                 if (BackgroundMusicSource.volume < 1f)
                 {
                     BackgroundMusicSource.volume += .2f * Time.deltaTime;
@@ -76,11 +76,35 @@ public class ExhibitorLogic : PickupLogic
 
     }
 
-    public void showChart3D()
+    public void toggleChart3D()
     {
         SpeechAudioSource.enabled = true;
         if (!Chart3D.activeInHierarchy)
         {
+            ResetAllFlipcharts();
+            Chart3D.SetActive(true);
+            //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
+            //the oder here is important because the play() will override the PlayOneShot(), not the opposite
+            PlaySpeech();
+            PlayOpenSound();
+        }
+        else
+        {
+            PlayOpenSound();
+            Chart3D.SetActive(false);
+            Exhibitor.GetComponent<AudioSource>().Stop();
+        }
+    }
+
+    public void showChart3D(bool show)
+    {
+        SpeechAudioSource.enabled = true;
+        if (show)
+        {
+            if (Chart3D.activeInHierarchy)
+            {
+                return;
+            }
             ResetAllFlipcharts();
             Chart3D.SetActive(true);
             //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
@@ -116,7 +140,7 @@ public class ExhibitorLogic : PickupLogic
         }
     }
 
-    void ResetAllFlipcharts()
+    public void ResetAllFlipcharts()
     {
         KillAllReportings();
         foreach (var flipchart in GameObject.FindGameObjectsWithTag("Flipchart"))

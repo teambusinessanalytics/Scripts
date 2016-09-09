@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using VRTK;
 
-public class PhoneLogic : PickupLogic {
+public class PhoneLogic : VRTK_InteractableObject {
     public AudioClip[] playList;
     public string musicSourceName;
     AudioSource musicSource;
@@ -11,8 +12,8 @@ public class PhoneLogic : PickupLogic {
     {
         musicSource= GameObject.Find(musicSourceName).GetComponent<AudioSource>();
         musicSource.loop = false;
-        Pickup = gameObject;
-        OriginalMatrials = Pickup.GetComponent<Renderer>().materials;
+        var pickup = gameObject.GetComponent<PickupLogic>();
+        var originalMatrials = pickup.GetComponent<Renderer>().materials;
     }
     void Update()
     {

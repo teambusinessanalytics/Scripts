@@ -1,8 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using VRTK;
 
-public class Exhibitor3 : MonoBehaviour {
+public class Exhibitor3 : VRTK_InteractableObject
+{
     ExhibitorLogic exhibitor;
+
+    public override void StartUsing(GameObject usingObject)
+    {
+        base.StartUsing(usingObject);
+        exhibitor.toggleChart3D();
+    }
+
+    public override void StopUsing(GameObject usingObject)
+    {
+        base.StopUsing(usingObject);
+        exhibitor.toggleChart3D();
+    }
 
     // Use this for initialization
     void Start () {
@@ -13,7 +27,7 @@ public class Exhibitor3 : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            exhibitor.showChart3D();
+            exhibitor.toggleChart3D();
         }
     }
 }
