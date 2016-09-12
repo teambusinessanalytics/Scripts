@@ -23,14 +23,31 @@ public class PointerEventCaller : MonoBehaviour {
 
     void OnEnable()
     {
+        
+        controllerEvents.TouchpadPressed += HandleTouchPadPressed;
+        controllerEvents.TouchpadReleased += HandleTouchPadReleased;
+    }
+
+    
+    private void HandleTouchPadPressed(object sender, ControllerInteractionEventArgs e)
+    {
+        simplePointer.ToggleBeam(true);
         controllerEvents.TriggerClicked += HandleTriggerPressed;
         controllerEvents.TriggerUnclicked += HandleTriggerReleased;
     }
 
-    void OnDisable()
+    private void HandleTouchPadReleased(object sender, ControllerInteractionEventArgs e)
     {
+        simplePointer.ToggleBeam(false);
         controllerEvents.TriggerClicked -= HandleTriggerPressed;
         controllerEvents.TriggerUnclicked -= HandleTriggerReleased;
+    }
+
+    void OnDisable()
+    {
+        
+        controllerEvents.TouchpadPressed -= HandleTouchPadPressed;
+        controllerEvents.TouchpadReleased -= HandleTouchPadReleased;
     }
 
     void FixedUpdate()
@@ -54,7 +71,6 @@ public class PointerEventCaller : MonoBehaviour {
         simplePointer.DestinationMarkerExit += HandlePointerOut;
     }
 
-
     private void HandleTriggerReleased(object sender, ControllerInteractionEventArgs e)
     {
         Debug.Log("trigger released event from caller.....");
@@ -67,16 +83,19 @@ public class PointerEventCaller : MonoBehaviour {
     {
         
         Debug.Log("shooting " + e.target.name + " while pointer in");
-        exhibitor = e.target.gameObject.GetComponent<ExhibitorLogic>();
         Debug.Log("trigger flipchart...");
+        exhibitor = e.target.gameObject.GetComponent<ExhibitorLogic>();
         if (exhibitor)
         {
-            exhibitor.showChart3D(true);
+            exhibitor.toggleChart3D();
         }else
         {
             exhibitor = new ExhibitorLogic();
             exhibitor.ResetAllFlipcharts();
         }
+
+        //unassign the event to avoid repeat of the actions above
+        simplePointer.DestinationMarkerEnter -= HandlePointerIn;
         
 
     }

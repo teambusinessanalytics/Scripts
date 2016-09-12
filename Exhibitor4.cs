@@ -10,13 +10,14 @@ public class Exhibitor4 : VRTK_InteractableObject
     public override void StartUsing(GameObject usingObject)
     {
         base.StartUsing(usingObject);
-        exhibitor.toggleChart3D();
+        exhibitor.ChangedMaterial(true);
     }
 
     public override void StopUsing(GameObject usingObject)
     {
         base.StopUsing(usingObject);
-        exhibitor.toggleChart3D();
+        exhibitor.ChangedMaterial(false);
+
     }
 
     // Use this for initialization

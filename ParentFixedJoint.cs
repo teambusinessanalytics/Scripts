@@ -38,7 +38,7 @@ public class ParentFixedJoint : MonoBehaviour {
 
 	void OnTriggerStay(Collider col)
 	{
-		print ("You've collied with " + col.name + " and activated onTriggerStay");
+		//print ("You've collied with " + col.name + " and activated onTriggerStay");
 		if((device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)) && fixedJoint == null && col.name != "table1")
 		{
 			//print ("fixedJoint is null and deviced holding touch");

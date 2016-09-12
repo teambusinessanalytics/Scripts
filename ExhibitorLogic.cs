@@ -10,6 +10,7 @@ public class ExhibitorLogic : PickupLogic
     public GameObject BackgroundMusicSourceObject;
     protected AudioSource BackgroundMusicSource;
     protected AudioSource SpeechAudioSource;
+    public Animator anim;
 
     //float originalMusicVolume;
     void Start()
@@ -17,6 +18,8 @@ public class ExhibitorLogic : PickupLogic
         OriginalMatrials = Exhibitor.GetComponent<Renderer>().materials;
         BackgroundMusicSource = BackgroundMusicSourceObject.GetComponent<AudioSource>();
         SpeechAudioSource = Exhibitor.GetComponent<AudioSource>();
+        anim = Chart3D.GetComponent<Animator>();
+
         SpeechAudioSource.clip = SpeechAudio;
         SpeechAudioSource.enabled = false;
         print("speechaudiosource: " + SpeechAudioSource.name);
@@ -79,16 +82,20 @@ public class ExhibitorLogic : PickupLogic
     public void toggleChart3D()
     {
         SpeechAudioSource.enabled = true;
+        Debug.Log("current animation is: " + anim.GetCurrentAnimatorStateInfo(0).IsName("show_reporting"));
+
         if (!Chart3D.activeInHierarchy)
         {
             ResetAllFlipcharts();
             Chart3D.SetActive(true);
+            anim.Play("show_reporting");
+
             //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
             //the oder here is important because the play() will override the PlayOneShot(), not the opposite
             PlaySpeech();
             PlayOpenSound();
         }
-        else
+        else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             PlayOpenSound();
             Chart3D.SetActive(false);
