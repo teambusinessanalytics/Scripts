@@ -31,7 +31,7 @@ public class Exhibitor1 : VRTK_InteractableObject
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("1 pressed");
-            exhibitor.toggleChart3D();
+            exhibitor.ToggleChart3D();
         }
     }
 

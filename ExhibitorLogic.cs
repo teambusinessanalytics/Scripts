@@ -82,26 +82,22 @@ public class ExhibitorLogic : PickupLogic
 
     }
 
-    public void toggleChart3D()
+    public void ToggleChart3D()
     {
         SpeechAudioSource.enabled = true;
 
         if (!Chart3D.activeInHierarchy)
         {
-            //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
-            //the oder here is important because the play() will override the PlayOneShot(), not the opposite
-            PlaySpeech();
-            PlayOpenSound();
 
             ResetAllFlipcharts();
             Chart3D.SetActive(true);
-            //Chart3D.GetComponent<Animator>().Play("show_reporting");
-            Chart3D.GetComponent<Transform>().GetChild(0).position = DefaultChartShapeTransform.position;
-            Chart3D.GetComponent<Transform>().GetChild(1).position = DefaultChartBackgroundTransform.position;
 
-            
+           //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
+            //the oder here is important because the play() will override the PlayOneShot(), not the opposite
+            PlaySpeech();
+            PlayOpenSound(); 
         }
-        else if (Chart3D.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        else
         {
             PlayOpenSound();
             Chart3D.SetActive(false);
@@ -109,7 +105,7 @@ public class ExhibitorLogic : PickupLogic
         }
     }
 
-    public void showChart3D(bool show)
+    public void ShowChart3D(bool show)
     {
         SpeechAudioSource.enabled = true;
         if (show)

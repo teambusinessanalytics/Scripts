@@ -28,7 +28,7 @@ public class Exhibitor3 : VRTK_InteractableObject
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            exhibitor.toggleChart3D();
+            exhibitor.ToggleChart3D();
         }
     }
 }

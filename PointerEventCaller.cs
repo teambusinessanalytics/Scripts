@@ -11,8 +11,8 @@ public class PointerEventCaller : MonoBehaviour {
     SteamVR_TrackedObject trackedObj;
     SteamVR_Controller.Device device;
 
-    bool dosomething;
-    private ExhibitorLogic exhibitor;
+    private ExhibitorLogic exhibitorIn;
+    private ExhibitorLogic exhibitorOut;
 
     void Awake()
     {
@@ -83,15 +83,16 @@ public class PointerEventCaller : MonoBehaviour {
     {
         
         Debug.Log("shooting " + e.target.name + " while pointer in");
-        Debug.Log("trigger flipchart...");
-        exhibitor = e.target.gameObject.GetComponent<ExhibitorLogic>();
-        if (exhibitor)
+        
+        exhibitorIn = e.target.gameObject.GetComponent<ExhibitorLogic>();
+        if (exhibitorIn)
         {
-            exhibitor.toggleChart3D();
+            Debug.Log("trigger flipchart...");
+            exhibitorIn.ToggleChart3D();
         }else
         {
-            exhibitor = new ExhibitorLogic();
-            exhibitor.ResetAllFlipcharts();
+            exhibitorIn = new ExhibitorLogic();
+            exhibitorIn.ResetAllFlipcharts();
         }
 
         //unassign the event to avoid repeat of the actions above
@@ -102,7 +103,7 @@ public class PointerEventCaller : MonoBehaviour {
 
     private void HandlePointerOut(object sender, DestinationMarkerEventArgs e)
     {
-        exhibitor.showChart3D(false);
+        exhibitorIn.ShowChart3D(false);
         Debug.Log("stopped shooting " + e.target.name);
         
     }
