@@ -10,15 +10,18 @@ public class ExhibitorLogic : PickupLogic
     public GameObject BackgroundMusicSourceObject;
     protected AudioSource BackgroundMusicSource;
     protected AudioSource SpeechAudioSource;
-    public Animator anim;
 
+    private Transform DefaultChartShapeTransform;
+    private Transform DefaultChartBackgroundTransform;
     //float originalMusicVolume;
     void Start()
     {
         OriginalMatrials = Exhibitor.GetComponent<Renderer>().materials;
         BackgroundMusicSource = BackgroundMusicSourceObject.GetComponent<AudioSource>();
         SpeechAudioSource = Exhibitor.GetComponent<AudioSource>();
-        anim = Chart3D.GetComponent<Animator>();
+        DefaultChartShapeTransform = Chart3D.transform.GetChild(0); //get the chart shape
+        DefaultChartBackgroundTransform = Chart3D.transform.GetChild(1); // get the chart background
+
 
         SpeechAudioSource.clip = SpeechAudio;
         SpeechAudioSource.enabled = false;
@@ -82,20 +85,23 @@ public class ExhibitorLogic : PickupLogic
     public void toggleChart3D()
     {
         SpeechAudioSource.enabled = true;
-        Debug.Log("current animation is: " + anim.GetCurrentAnimatorStateInfo(0).IsName("show_reporting"));
 
         if (!Chart3D.activeInHierarchy)
         {
-            ResetAllFlipcharts();
-            Chart3D.SetActive(true);
-            anim.Play("show_reporting");
-
             //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
             //the oder here is important because the play() will override the PlayOneShot(), not the opposite
             PlaySpeech();
             PlayOpenSound();
+
+            ResetAllFlipcharts();
+            Chart3D.SetActive(true);
+            //Chart3D.GetComponent<Animator>().Play("show_reporting");
+            Chart3D.GetComponent<Transform>().GetChild(0).position = DefaultChartShapeTransform.position;
+            Chart3D.GetComponent<Transform>().GetChild(1).position = DefaultChartBackgroundTransform.position;
+
+            
         }
-        else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        else if (Chart3D.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             PlayOpenSound();
             Chart3D.SetActive(false);
@@ -139,7 +145,7 @@ public class ExhibitorLogic : PickupLogic
         Exhibitor.GetComponent<AudioSource>().PlayOneShot(OpenSound);
     }
 
-    void KillAllReportings()
+    static void KillAllReportings()
     {
         foreach (var reporting in GameObject.FindGameObjectsWithTag("Reporting"))
         {

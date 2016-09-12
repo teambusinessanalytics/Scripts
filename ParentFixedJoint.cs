@@ -36,32 +36,32 @@ public class ParentFixedJoint : MonoBehaviour {
         
     }
 
-	void OnTriggerStay(Collider col)
-	{
-		//print ("You've collied with " + col.name + " and activated onTriggerStay");
-		if((device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)) && fixedJoint == null && col.name != "table1")
-		{
-			//print ("fixedJoint is null and deviced holding touch");
-			fixedJoint = col.gameObject.AddComponent<FixedJoint> ();
-			//print ("fixedJoint added");
-			fixedJoint.connectedBody = rigidBodyAttachPoint;
-			//print ("fixedJoint attach point assigned");
-		}
-        else if (fixedJoint != null && (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) || device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)))
-        {
-            //print ("fixedJoint is not null and deviced realses touch");
+	//void OnTriggerStay(Collider col)
+	//{
+	//	//print ("You've collied with " + col.name + " and activated onTriggerStay");
+	//	if((device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)) && fixedJoint == null && col.name != "table1")
+	//	{
+	//		//print ("fixedJoint is null and deviced holding touch");
+	//		fixedJoint = col.gameObject.AddComponent<FixedJoint> ();
+	//		//print ("fixedJoint added");
+	//		fixedJoint.connectedBody = rigidBodyAttachPoint;
+	//		//print ("fixedJoint attach point assigned");
+	//	}
+ //       else if (fixedJoint != null && (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) || device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)))
+ //       {
+ //           //print ("fixedJoint is not null and deviced realses touch");
 
-            Rigidbody rigidBody = fixedJoint.gameObject.GetComponent<Rigidbody>();
-            Destroy(fixedJoint);
-            print("fixedJoint destroyed");
-            fixedJoint = null;
+ //           Rigidbody rigidBody = fixedJoint.gameObject.GetComponent<Rigidbody>();
+ //           Destroy(fixedJoint);
+ //           print("fixedJoint destroyed");
+ //           fixedJoint = null;
 
-            tossObject(rigidBody);
-            print("tossing object");
+ //           tossObject(rigidBody);
+ //           print("tossing object");
 
-        }
+ //       }
 
-    }
+ //   }
 
 	void tossObject(Rigidbody rigidBody)
 	{
