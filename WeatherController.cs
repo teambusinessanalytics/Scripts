@@ -31,14 +31,20 @@ public class WeatherController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _fullIntensity = sun.intensity;
+        if (sun)
+        {
+            _fullIntensity = sun.intensity;
+        }
 	}
 	
 
     private void SetOvercast(float value)
     {
         sky.SetFloat("_Blend", value);
-        sun.intensity = _fullIntensity - (_fullIntensity * value);
+        if (sun)
+        {
+            sun.intensity = _fullIntensity - (_fullIntensity * value);
+        }
 
         var counter = 0.1f;
         var position = GameObject.Find("Laptop").transform.position;
@@ -47,13 +53,16 @@ public class WeatherController : MonoBehaviour {
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<Rigidbody>();
-            cube.AddComponent<VRTK.VRTK_InteractableObject>();
-            cube.GetComponent<VRTK.VRTK_InteractableObject>().isGrabbable = true;
-            cube.GetComponent<VRTK.VRTK_InteractableObject>().precisionSnap = true;
-            cube.GetComponent<VRTK.VRTK_InteractableObject>().highlightOnTouch = true;
-            cube.GetComponent<VRTK.VRTK_InteractableObject>().touchHighlightColor = Color.yellow;
-            cube.GetComponent<VRTK.VRTK_InteractableObject>().detachThreshold = 2000;
-            cube.transform.position = new Vector3(position.x+ Random.value * 10, position.y+ Random.value*5, position.z+Random.value*2);
+            cube.AddComponent<SendDataTrigger>();
+            cube.GetComponent<SendDataTrigger>().identifier = "DataCube";
+            //cube.AddComponent<VRTK.VRTK_InteractableObject>();
+            //cube.GetComponent<VRTK.VRTK_InteractableObject>().isGrabbable = true;
+            //cube.GetComponent<VRTK.VRTK_InteractableObject>().precisionSnap = true;
+            //cube.GetComponent<VRTK.VRTK_InteractableObject>().highlightOnTouch = true;
+            //cube.GetComponent<VRTK.VRTK_InteractableObject>().touchHighlightColor = Color.green;
+            //cube.GetComponent<VRTK.VRTK_InteractableObject>().detachThreshold = 2000;
+            cube.transform.localScale = cube.transform.localScale * .5f;
+            cube.transform.position = new Vector3(position.x+ Random.value * 10, position.y+ Random.value*10, position.z+Random.value*10);
             cube.GetComponent<Rigidbody>().drag = 1000;
             cube.GetComponent<Rigidbody>().angularDrag = 1000;
             counter = counter + 0.01f;

@@ -1,0 +1,17 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class SendDataTrigger : MonoBehaviour {
+
+    public string identifier;
+
+    private bool _triggered;
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (_triggered) { return; }
+
+        Managers.Weather.LogWeather(identifier);
+        _triggered = true;
+    }
+}

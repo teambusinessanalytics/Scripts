@@ -2,10 +2,12 @@
 using System.Collections;
 using VRTK;
 
-public class PaperHolder :  VRTK_InteractableObject{
+public class PaperHolder :  VRTK_InteractableObject
+{
 
 	// Use this for initialization
 	void Start () {
+        base.Start();
         
 	}
 	
