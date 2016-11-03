@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using VRTK;
 
-public class PickupLogic : MonoBehaviour
+public abstract class PickupLogic : MonoBehaviour
 {
     public Material GazedMaterial;
     protected Material[] OriginalMatrials;
@@ -14,7 +14,12 @@ public class PickupLogic : MonoBehaviour
     public GameObject Chart2D;
     public AudioClip OpenSound;
     public GameObject HighLight;
-    
+
+    public abstract void HandlePointerInTriggerEvent();
+    public abstract void HandlePointerOutTriggerEvent();
+    public abstract void ResetAllFlipcharts();
+
+
     void Start()
     {
         Pickup = gameObject;
@@ -81,5 +86,6 @@ public class PickupLogic : MonoBehaviour
         print("play open sound");
     }
 
-    
+
+
 }

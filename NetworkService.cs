@@ -4,7 +4,7 @@ using System;
 
 public class NetworkService {
     private const string xmlApi = "http://api.openweathermap.org/data/2.5/weather?id=2934246&APPID=d1770ac1358ebd4db17727680e711682&mode=xml";
-    private const string jsonApi = "http://api.openweathermap.org/data/2.5/weather?q=newyork&APPID=d1770ac1358ebd4db17727680e711682&mode=json";
+    private const string jsonApi = "http://api.openweathermap.org/data/2.5/weather?q=tokyo&APPID=d1770ac1358ebd4db17727680e711682&mode=json";
     private const string localApi = "http://192.168.0.104/vr2go/api.php";
 
     private bool IsResponseValid(WWW www)
@@ -61,7 +61,7 @@ public class NetworkService {
 
     public IEnumerator GetWeatherJSON(Action<string> callback)
     {
-        return CallAPI(jsonApi, null, callback);
+        return CallAPI(jsonApi, null, callback); //null makes the request a GET
 
     }
 

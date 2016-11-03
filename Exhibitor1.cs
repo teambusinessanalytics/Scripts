@@ -26,7 +26,6 @@ public class Exhibitor1 : VRTK_InteractableObject
         exhibitor = transform.GetComponent<ExhibitorLogic>();
 	}
 	
-	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {

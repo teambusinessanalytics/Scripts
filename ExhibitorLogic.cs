@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System;
 
 public class ExhibitorLogic : PickupLogic
 {
@@ -149,7 +150,7 @@ public class ExhibitorLogic : PickupLogic
         }
     }
 
-    public void ResetAllFlipcharts()
+    public override void ResetAllFlipcharts()
     {
         KillAllReportings();
         foreach (var flipchart in GameObject.FindGameObjectsWithTag("Flipchart"))
@@ -162,4 +163,15 @@ public class ExhibitorLogic : PickupLogic
             }
         }
     }
+
+    public override void HandlePointerInTriggerEvent()
+    {
+        ToggleChart3D();
+    }
+
+    public override void HandlePointerOutTriggerEvent()
+    {
+        ShowChart3D(false);
+    }
+
 }

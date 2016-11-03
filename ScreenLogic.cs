@@ -1,9 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class ScreenLogic : PickupLogic {
     public GameObject Chart3D;
 
+    public override void HandlePointerInTriggerEvent()
+    {
+
+    }
+
+    public override void HandlePointerOutTriggerEvent()
+    {
+        
+    }
+
+    public override void ResetAllFlipcharts()
+    {
+        
+    }
 
     public void showChart3D()
     {
