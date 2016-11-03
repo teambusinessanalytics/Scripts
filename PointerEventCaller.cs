@@ -89,9 +89,6 @@ public class PointerEventCaller : MonoBehaviour {
         {
             Debug.Log("trigger pickup object in...");
             pickupObjectIn.HandlePointerInTriggerEvent();
-        }else
-        {
-            pickupObjectIn.ResetAllFlipcharts();
         }
 
         //unassign the event to avoid repeat of the actions above

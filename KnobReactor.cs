@@ -12,7 +12,7 @@ public class KnobReactor : MonoBehaviour {
     private void handleTurn(float value, float normValue)
     {
         //Debug.Log("turned: " + value + ", " + normValue);
-        go.transform.localEulerAngles = new Vector3(0, value, 0);
+        go.transform.localEulerAngles = new Vector3(go.transform.localEulerAngles.x, value, go.transform.localEulerAngles.z);
     }
 	// Update is called once per frame
 	void Update () {

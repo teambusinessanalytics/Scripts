@@ -52,7 +52,7 @@ public class WeatherController : MonoBehaviour {
         while (counter < value)
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.AddComponent<Rigidbody>();
+            cube.GetComponent<Collider>().isTrigger = true;
             cube.AddComponent<SendDataTrigger>();
             cube.GetComponent<SendDataTrigger>().identifier = "DataCube";
             //cube.AddComponent<VRTK.VRTK_InteractableObject>();
@@ -63,8 +63,6 @@ public class WeatherController : MonoBehaviour {
             //cube.GetComponent<VRTK.VRTK_InteractableObject>().detachThreshold = 2000;
             cube.transform.localScale = cube.transform.localScale * .5f;
             cube.transform.position = new Vector3(position.x+ Random.value * 10, position.y+ Random.value*10, position.z+Random.value*10);
-            cube.GetComponent<Rigidbody>().drag = 1000;
-            cube.GetComponent<Rigidbody>().angularDrag = 1000;
             counter = counter + 0.01f;
         }
 

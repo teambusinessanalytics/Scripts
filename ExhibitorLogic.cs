@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using System;
+using VRTK;
 
 public class ExhibitorLogic : PickupLogic
 {
@@ -9,14 +10,16 @@ public class ExhibitorLogic : PickupLogic
     public GameObject Chart3D;
     public AudioClip SpeechAudio;
     public GameObject BackgroundMusicSourceObject;
+    public GameObject ControlButton;
     protected AudioSource BackgroundMusicSource;
     protected AudioSource SpeechAudioSource;
 
     private Transform DefaultChartShapeTransform;
     private Transform DefaultChartBackgroundTransform;
     //float originalMusicVolume;
-    void Start()
+    new void Start()
     {
+        base.Start();
         OriginalMatrials = Exhibitor.GetComponent<Renderer>().materials;
         BackgroundMusicSource = BackgroundMusicSourceObject.GetComponent<AudioSource>();
         SpeechAudioSource = Exhibitor.GetComponent<AudioSource>();
@@ -29,8 +32,9 @@ public class ExhibitorLogic : PickupLogic
         print("speechaudiosource: " + SpeechAudioSource.name);
         print("backgroundaudiosource: " + BackgroundMusicSource.name);
     }
-    void Update()
+    new void Update()
     {
+        base.Update();
         if (SpeechAudio && SpeechAudioSource.enabled == true)
         {
             //SpeechAudioSource.clip = SpeechAudio;
@@ -96,13 +100,17 @@ public class ExhibitorLogic : PickupLogic
            //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
             //the oder here is important because the play() will override the PlayOneShot(), not the opposite
             PlaySpeech();
-            PlayOpenSound(); 
+            PlayOpenSound();
+
+            //ControlButton.GetComponent<KnobReactor>().go = Chart3D;
+
         }
         else
         {
             PlayOpenSound();
             Chart3D.SetActive(false);
             Exhibitor.GetComponent<AudioSource>().Stop();
+            //ControlButton.GetComponent<KnobReactor>().go = null;
         }
     }
 
@@ -173,5 +181,20 @@ public class ExhibitorLogic : PickupLogic
     {
         ShowChart3D(false);
     }
+
+    public override void StartUsing(GameObject usingObject)
+    {
+        base.StartUsing(usingObject);
+        ChangedMaterial(true);
+    }
+
+    public override void StopUsing(GameObject usingObject)
+    {
+        base.StopUsing(usingObject);
+        ChangedMaterial(false);
+
+    }
+
+
 
 }

@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class TowerLogic : PickupLogic {
+public class WindowChangerLogic : PickupLogic {
     public Material DefaultSkybox;
     public Material ChangedSkybox;
 
@@ -14,7 +14,7 @@ public class TowerLogic : PickupLogic {
 
     public override void HandlePointerInTriggerEvent()
     {
-        throw new NotImplementedException();
+        ChangeSkybox();
     }
 
     public override void HandlePointerOutTriggerEvent()

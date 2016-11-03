@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using VRTK;
 
-public class PickupLogic : MonoBehaviour
+public class PickupLogic : VRTK_InteractableObject
 {
     public Material GazedMaterial;
     protected Material[] OriginalMatrials;
@@ -16,14 +16,11 @@ public class PickupLogic : MonoBehaviour
     public GameObject HighLight;
 
 
-    void Start()
+    new void Start()
     {
+        base.Start();
         Pickup = gameObject;
         OriginalMatrials = Pickup.GetComponent<Renderer>().materials;
-    }
-    void Update()
-    {
-
     }
 
     void Dead()
@@ -50,7 +47,7 @@ public class PickupLogic : MonoBehaviour
 
     public void ObjectEvo()
     {
-        GameObject.Destroy(HighLight);
+        HighLight.SetActive(false);
         Pickup.GetComponent<Animator>().Play(EvoAnimation);
     }
 

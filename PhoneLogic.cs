@@ -2,22 +2,25 @@
 using System.Collections;
 using VRTK;
 
-public class PhoneLogic : VRTK_InteractableObject {
+public class PhoneLogic : PickupLogic {
     public AudioClip[] playList;
     public string musicSourceName;
     AudioSource musicSource;
     int counter = 0;
 
-    void Start()
+    new void Start()
     {
+        base.Start();
         musicSource= GameObject.Find(musicSourceName).GetComponent<AudioSource>();
         musicSource.loop = false;
         var pickup = gameObject.GetComponent<PickupLogic>();
         var originalMatrials = pickup.GetComponent<Renderer>().materials;
     }
-    void Update()
+    new void Update()
     {
-        if (!musicSource.isPlaying && counter>0)
+        base.Update();
+        Debug.Log("phone playing music from: " + musicSource.name + ": " + musicSource.isPlaying);
+        if (!musicSource.isPlaying && counter>=0)
         {
             ChangeMusic();
         }
@@ -27,5 +30,10 @@ public class PhoneLogic : VRTK_InteractableObject {
         musicSource.clip = playList[counter%playList.Length];
         musicSource.Play();
         counter++;
+    }
+
+    public override void StartUsing(GameObject currentUsingObject)
+    {
+        ChangeMusic();
     }
 }

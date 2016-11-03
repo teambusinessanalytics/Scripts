@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using VRTK;
 
-public class se_cube : VRTK_InteractableObject
+public class se_cube : PickupLogic
 {
 
     public string scene;
@@ -51,13 +51,14 @@ public class se_cube : VRTK_InteractableObject
 
     // Use this for initialization
 
-    void Start()
+    new void Start()
     {
-        
+        base.Start();
     }
 
-    void Update()
+    new void Update()
     {
+        base.Update();
         //GameObject.Find("SE Logo").GetComponent<Collider>().enabled = !GameObject.Find("SE Logo").GetComponent<AudioSource>().isPlaying;
         if(GameObject.Find("BlackRoomStart") && GameObject.Find("BlackRoomStart").GetComponent<AudioSource>().isPlaying) GameObject.Find("BlackRoomStart").GetComponent<AudioSource>().volume -= .02f * Time.deltaTime;
     }
