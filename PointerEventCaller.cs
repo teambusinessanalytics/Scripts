@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Events;
 using VRTK;
 using UnityEngine.SceneManagement;
+using System.Reflection;
 
 public class PointerEventCaller : MonoBehaviour {
 
@@ -52,15 +53,15 @@ public class PointerEventCaller : MonoBehaviour {
 
     void FixedUpdate()
     {
-        device = SteamVR_Controller.Input((int)trackedObj.index);
+        //device = SteamVR_Controller.Input((int)trackedObj.index);
 
 
-        if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
-        {
-            Debug.Log("app menu press up");
-            print("reset scene");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        //if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        //{
+        //    Debug.Log("app menu press up");
+        //    print("reset scene");
+        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //}
     }
 
 
@@ -81,8 +82,7 @@ public class PointerEventCaller : MonoBehaviour {
 
     private void HandlePointerIn(object sender, DestinationMarkerEventArgs e)
     {
-        
-        Debug.Log("shooting " + e.target.name + " while pointer in");
+        Debug.Log("shooting from: "+ sender.ToString() + " to: " + e.target.name + " while pointer in");
         
         pickupObjectIn = e.target.gameObject.GetComponent<PickupLogic>();
         if (pickupObjectIn)

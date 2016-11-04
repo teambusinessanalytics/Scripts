@@ -25,7 +25,7 @@ public class WeatherController : MonoBehaviour {
 
     private void OnWeatherUpdated()
     {
-        SetOvercast(Managers.Weather.cloudValue);
+        //SetOvercast(Managers.Weather.cloudValue);
 
     }
 
@@ -35,7 +35,7 @@ public class WeatherController : MonoBehaviour {
         {
             _fullIntensity = sun.intensity;
         }
-	}
+    }
 	
 
     private void SetOvercast(float value)
@@ -52,7 +52,7 @@ public class WeatherController : MonoBehaviour {
         while (counter < value)
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.GetComponent<Collider>().isTrigger = true;
+            cube.GetComponent<Collider>().enabled = false;
             cube.AddComponent<SendDataTrigger>();
             cube.GetComponent<SendDataTrigger>().identifier = "DataCube";
             //cube.AddComponent<VRTK.VRTK_InteractableObject>();

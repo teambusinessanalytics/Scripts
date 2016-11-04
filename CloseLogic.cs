@@ -7,14 +7,14 @@ public class CloseLogic : VRTK_InteractableObject
 
     public GameObject chart;
 
-    void Start()
+    new void Start()
     {
         base.Start();
     }
 
-    void Update()
+    new void Update()
     {
-
+        base.Update();
     }
 
     public override void StartUsing(GameObject usingObject)

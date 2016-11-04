@@ -5,27 +5,17 @@ using VRTK;
 public class LaptopLogic : VRTK_InteractableObject
 {
 
-    void Start()
+    public override void OnInteractableObjectGrabbed(InteractableObjectEventArgs e)
     {
-        base.Start();
+        base.OnInteractableObjectGrabbed(e);
+        //gameObject.GetComponent<Collider>().isTrigger = true;
     }
-    void Update()
+    public override void OnInteractableObjectUngrabbed(InteractableObjectEventArgs e)
     {
-        
+        base.OnInteractableObjectUngrabbed(e);
+        gameObject.GetComponent<Collider>().isTrigger = false;
+        gameObject.GetComponent<Collider>().enabled = true;
+
     }
 
-    
-    //public void showChart2D()
-    //{
-    //    if (AppIcon.activeInHierarchy == true)
-    //    {
-    //        AppIcon.SetActive(false);
-    //        Chart2D.SetActive(true);
-    //    }
-    //    else
-    //    {
-    //        Chart2D.SetActive(true);
-    //    }
-
-    //}
 }

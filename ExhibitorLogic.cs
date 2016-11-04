@@ -11,30 +11,35 @@ public class ExhibitorLogic : PickupLogic
     public AudioClip SpeechAudio;
     public GameObject BackgroundMusicSourceObject;
     public GameObject ControlButton;
-    protected AudioSource BackgroundMusicSource;
-    protected AudioSource SpeechAudioSource;
+    private AudioSource BackgroundMusicSource;
+    private AudioSource SpeechAudioSource;
 
     private Transform DefaultChartShapeTransform;
     private Transform DefaultChartBackgroundTransform;
     //float originalMusicVolume;
+
+    new void Awake()
+    {
+        base.Awake();
+        OriginalMatrials = Exhibitor.GetComponent<Renderer>().materials;
+        BackgroundMusicSource = BackgroundMusicSourceObject.GetComponent<AudioSource>();
+        SpeechAudioSource = gameObject.GetComponent<AudioSource>();
+        //DefaultChartShapeTransform = Chart3D.transform.GetChild(0); //get the chart shape
+        //DefaultChartBackgroundTransform = Chart3D.transform.GetChild(1); // get the chart background
+        SpeechAudioSource.clip = SpeechAudio;
+    }
+
     new void Start()
     {
         base.Start();
-        OriginalMatrials = Exhibitor.GetComponent<Renderer>().materials;
-        BackgroundMusicSource = BackgroundMusicSourceObject.GetComponent<AudioSource>();
-        SpeechAudioSource = Exhibitor.GetComponent<AudioSource>();
-        DefaultChartShapeTransform = Chart3D.transform.GetChild(0); //get the chart shape
-        DefaultChartBackgroundTransform = Chart3D.transform.GetChild(1); // get the chart background
 
-
-        SpeechAudioSource.clip = SpeechAudio;
         SpeechAudioSource.enabled = false;
-        print("speechaudiosource: " + SpeechAudioSource.name);
-        print("backgroundaudiosource: " + BackgroundMusicSource.name);
+        print("speechaudiosource: " + SpeechAudioSource.name + ", on: " + SpeechAudioSource.enabled);
+        print("backgroundaudiosource: " + BackgroundMusicSource.name + "initiated");
     }
     new void Update()
     {
-        base.Update();
+        //base.Update();
         if (SpeechAudio && SpeechAudioSource.enabled == true)
         {
             //SpeechAudioSource.clip = SpeechAudio;
@@ -43,15 +48,15 @@ public class ExhibitorLogic : PickupLogic
                 print(SpeechAudioSource.clip.name + " playing...");
                 //print("volume turned down to: " + originalMusicVolume.ToString());
                 //GameObject.FindObjectOfType<EventSystem>().enabled = false;
-                if (BackgroundMusicSource.volume > .05f) BackgroundMusicSource.volume -= .5f * Time.deltaTime;
+                if (BackgroundMusicSource.volume > 0f) BackgroundMusicSource.volume -= .5f * Time.deltaTime;
             }
             else if (!SpeechAudioSource.isPlaying)
             {
                 print(SpeechAudioSource.clip.name + " not playing...");
                 //GameObject.FindObjectOfType<EventSystem>().enabled = true;
-                if (BackgroundMusicSource.volume < 1f)
+                if (BackgroundMusicSource.volume < 0.3f)
                 {
-                    BackgroundMusicSource.volume += .2f * Time.deltaTime;
+                    BackgroundMusicSource.volume += .1f * Time.deltaTime;
                 }else
                 {
                     SpeechAudioSource.enabled = false;
@@ -60,7 +65,7 @@ public class ExhibitorLogic : PickupLogic
         }
     }
 
-    public override void ChangedMaterial(bool gazed)
+    public override void ChangeMaterial(bool gazed)
     {
         if (gazed)
         {
@@ -89,34 +94,32 @@ public class ExhibitorLogic : PickupLogic
 
     public void ToggleChart3D()
     {
-        SpeechAudioSource.enabled = true;
-
-        if (!Chart3D.activeInHierarchy)
+        //SpeechAudioSource.enabled = true;
+        Debug.Log("toggling chart 3d from: " + gameObject.name + ", speechAudioSource.enabled: " + SpeechAudioSource.enabled);
+        if (Chart3D!=null && !Chart3D.activeInHierarchy)
         {
 
             ResetAllFlipcharts();
             Chart3D.SetActive(true);
 
-           //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
+            //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
             //the oder here is important because the play() will override the PlayOneShot(), not the opposite
-            PlaySpeech();
-            PlayOpenSound();
 
+            StartCoroutine(PlayOpenAndSpeech());
             //ControlButton.GetComponent<KnobReactor>().go = Chart3D;
 
         }
-        else
+        else if(Chart3D.activeInHierarchy)
         {
+            gameObject.GetComponent<AudioSource>().Stop();
             PlayOpenSound();
             Chart3D.SetActive(false);
-            Exhibitor.GetComponent<AudioSource>().Stop();
             //ControlButton.GetComponent<KnobReactor>().go = null;
         }
     }
 
     public void ShowChart3D(bool show)
     {
-        SpeechAudioSource.enabled = true;
         if (show)
         {
             if (Chart3D.activeInHierarchy)
@@ -127,8 +130,9 @@ public class ExhibitorLogic : PickupLogic
             Chart3D.SetActive(true);
             //here should first play the speech using play(), then use PlayOneShot() for playing opening sound
             //the oder here is important because the play() will override the PlayOneShot(), not the opposite
-            PlaySpeech();
-            PlayOpenSound();
+
+            StartCoroutine(PlayOpenAndSpeech());
+
         }
         else
         {
@@ -138,19 +142,28 @@ public class ExhibitorLogic : PickupLogic
         }
     }
 
-    void PlaySpeech()
+    public override IEnumerator PlayOpenAndSpeech()
     {
-        Exhibitor.GetComponent<AudioSource>().clip = SpeechAudio;
-        Exhibitor.GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(PlayOpenSound());
+        PlaySpeech();
     }
 
-    protected override void PlayOpenSound()
+    public override void PlaySpeech()
     {
-        print("Play Open Sound");
-        Exhibitor.GetComponent<AudioSource>().PlayOneShot(OpenSound);
+        Debug.Log("start to play speech from exhibitor...");
+        SpeechAudioSource.enabled = true;
+        SpeechAudioSource.clip = SpeechAudio;
+        SpeechAudioSource.Play();
+        
     }
 
-    static void KillAllReportings()
+    //protected override void PlayOpenSound()
+    //{
+    //    print("Play Open Sound");
+    //    Exhibitor.GetComponent<AudioSource>().PlayOneShot(OpenSound);
+    //}
+
+    public static void KillAllReportings()
     {
         foreach (var reporting in GameObject.FindGameObjectsWithTag("Reporting"))
         {
@@ -174,6 +187,7 @@ public class ExhibitorLogic : PickupLogic
 
     public override void HandlePointerInTriggerEvent()
     {
+        base.HandlePointerInTriggerEvent();
         ToggleChart3D();
     }
 
@@ -185,13 +199,13 @@ public class ExhibitorLogic : PickupLogic
     public override void StartUsing(GameObject usingObject)
     {
         base.StartUsing(usingObject);
-        ChangedMaterial(true);
+        ChangeMaterial(true);
     }
 
     public override void StopUsing(GameObject usingObject)
     {
         base.StopUsing(usingObject);
-        ChangedMaterial(false);
+        ChangeMaterial(false);
 
     }
 

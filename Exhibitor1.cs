@@ -9,24 +9,25 @@ public class Exhibitor1 : VRTK_InteractableObject
     public override void StartUsing(GameObject usingObject)
     {
         base.StartUsing(usingObject);
-        exhibitor.ChangedMaterial(true);
+        exhibitor.ChangeMaterial(true);
     }
 
     public override void StopUsing(GameObject usingObject)
     {
         base.StopUsing(usingObject);
-        exhibitor.ChangedMaterial(false);
+        exhibitor.ChangeMaterial(false);
 
     }
 
 
     // Use this for initialization
-    void Start () {
+    new void Start () {
         base.Start();
         exhibitor = transform.GetComponent<ExhibitorLogic>();
 	}
 	
-	void Update () {
+	new void Update () {
+        base.Update();
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("1 pressed");
