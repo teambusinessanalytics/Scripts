@@ -53,15 +53,15 @@ public class PointerEventCaller : MonoBehaviour {
 
     void FixedUpdate()
     {
-        //device = SteamVR_Controller.Input((int)trackedObj.index);
+        device = SteamVR_Controller.Input((int)trackedObj.index);
 
 
-        //if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
-        //{
-        //    Debug.Log("app menu press up");
-        //    print("reset scene");
-        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        //}
+        if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        {
+            Debug.Log("app menu press up");
+            print("reset scene");
+            PickupLogic.ResetScene();
+        }
     }
 
 

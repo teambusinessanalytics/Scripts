@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class KnobReactor : MonoBehaviour {
-    public GameObject go;
+    public GameObject targetObject;
     
 	// Use this for initialization
 	void Start () {
@@ -12,7 +12,7 @@ public class KnobReactor : MonoBehaviour {
     private void handleTurn(float value, float normValue)
     {
         //Debug.Log("turned: " + value + ", " + normValue);
-        go.transform.localEulerAngles = new Vector3(go.transform.localEulerAngles.x, value, go.transform.localEulerAngles.z);
+        targetObject.transform.localEulerAngles = new Vector3(targetObject.transform.localEulerAngles.x, value, targetObject.transform.localEulerAngles.z);
     }
 	// Update is called once per frame
 	void Update () {

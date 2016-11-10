@@ -18,6 +18,6 @@ public class ExitLogic : PickupLogic {
 
     public override void HandlePointerInTriggerEvent()
     {
-        //ResetScene();
+        ResetScene();
     }
 }

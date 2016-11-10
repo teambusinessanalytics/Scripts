@@ -16,11 +16,16 @@ public class PickupLogic : VRTK_InteractableObject
     public AudioClip OpenSound;
     public GameObject HighLight;
 
+    protected Animator animator;
+    protected Transform originalTransform;
+
     new void Start()
     {
         base.Start();
         Pickup = gameObject;
-        OriginalMatrials = Pickup.GetComponent<Renderer>().materials;  
+        OriginalMatrials = Pickup.GetComponent<Renderer>().materials;
+        originalTransform = gameObject.transform;
+        animator = gameObject.GetComponent<Animator>();
     }
 
 
@@ -36,20 +41,20 @@ public class PickupLogic : VRTK_InteractableObject
             //List<Material> materials = new List<Material>(Pickup.GetComponent<Renderer>().materials);
             //materials.Add(GazedMaterial);
             //Pickup.GetComponent<Renderer>().materials = materials.ToArray();
-            if (GazedMaterial) Pickup.GetComponent<Renderer>().material = GazedMaterial;
+            //if (GazedMaterial) Pickup.GetComponent<Renderer>().material = GazedMaterial;
             if(HighLight) HighLight.SetActive(true);
         }
         else
         {
-            Pickup.GetComponent<Renderer>().materials = OriginalMatrials;
+            //Pickup.GetComponent<Renderer>().materials = OriginalMatrials;
             if (HighLight) HighLight.SetActive(false);
         };
     }
 
-    public void ObjectEvo()
+    public virtual void ObjectEvo()
     {
         HighLight.SetActive(false);
-        Pickup.GetComponent<Animator>().Play(EvoAnimation);
+        animator.SetBool("JumpToLaptop", true);
     }
 
     public void ActivateAppIcon()
@@ -59,18 +64,29 @@ public class PickupLogic : VRTK_InteractableObject
         {
             AppIcon.SetActive(false);
             AppIcon.SetActive(true);
-        }else
+        }
+        else
         {
             AppIcon.SetActive(true);
         }
-        Dead();
+        //Dead();
         
     }
     
-    public void ResetScene()
+    public static void ResetScene()
     {
-        print("reset scene");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //print("reset scene");
+        //var tableScene = GameObject.Find("TableScene");
+        //var officeScene = GameObject.Find("OfficeScene");
+        //var controller = GameObject.Find("Controller");
+        //var gameManagers = GameObject.Find("GameManagers");
+
+        //Destroy(tableScene);
+        //Destroy(officeScene);
+        //Destroy(controller);
+        //Destroy(gameManagers);
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name); //TODO: fix the reset crash problem
     }
 
     public virtual IEnumerator PlayOpenAndSpeech()
