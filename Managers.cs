@@ -5,15 +5,19 @@ using System.Collections.Generic;
 public class Managers : MonoBehaviour {
 
     public static WeatherManager Weather { get; private set; }
+    public static GoogleMapManager Map { get; private set; }
 
     private List<IGameManager> _startSequence;
 
     void Awake()
     {
         Weather = GetComponent<WeatherManager>();
+        Map = GetComponent<GoogleMapManager>();
 
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Weather);
+        _startSequence.Add(Map);
+
         StartCoroutine(StartupManagers());
 
     }

@@ -5,31 +5,36 @@ using VRTK;
 using UnityEngine.SceneManagement;
 using System.Reflection;
 
-public class PointerEventCaller : MonoBehaviour {
+public class ControllerEventCaller : MonoBehaviour {
 
     private VRTK_SimplePointer simplePointer;
     private VRTK_ControllerEvents controllerEvents;
     SteamVR_TrackedObject trackedObj;
-    SteamVR_Controller.Device device;
+    SteamVR_Controller.Device rightDevice;
+    SteamVR_Controller.Device leftDevice;
 
     private PickupLogic pickupObjectIn;
     private PickupLogic pickupObjectOut;
+
+    private VRTK_ControllerTooltips controllerToolTips;
 
     void Awake()
     {
         simplePointer = GetComponent<VRTK_SimplePointer>();
         controllerEvents = GetComponent<VRTK_ControllerEvents>();
         trackedObj = GetComponent<SteamVR_TrackedObject>();
+        controllerToolTips = gameObject.GetComponentInChildren<VRTK_ControllerTooltips>();
+
+        rightDevice = SteamVR_Controller.Input(SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost));
+        leftDevice = SteamVR_Controller.Input(SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Leftmost));
     }
 
     void OnEnable()
     {
-        
         controllerEvents.TouchpadPressed += HandleTouchPadPressed;
         controllerEvents.TouchpadReleased += HandleTouchPadReleased;
     }
 
-    
     private void HandleTouchPadPressed(object sender, ControllerInteractionEventArgs e)
     {
         simplePointer.ToggleBeam(true);
@@ -53,15 +58,14 @@ public class PointerEventCaller : MonoBehaviour {
 
     void FixedUpdate()
     {
-        device = SteamVR_Controller.Input((int)trackedObj.index);
 
+        //if (leftDevice.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        //{
+        //    Debug.Log("app menu press up");
+        //    print("reset scene");
+        //    PickupLogic.ResetScene();
+        //}
 
-        if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
-        {
-            Debug.Log("app menu press up");
-            print("reset scene");
-            PickupLogic.ResetScene();
-        }
     }
 
 
@@ -99,8 +103,10 @@ public class PointerEventCaller : MonoBehaviour {
 
     private void HandlePointerOut(object sender, DestinationMarkerEventArgs e)
     {
-        pickupObjectIn.HandlePointerOutTriggerEvent();
-        Debug.Log("stopped shooting " + e.target.name);
-        
+        if (pickupObjectIn)
+        {
+            pickupObjectIn.HandlePointerOutTriggerEvent();
+            Debug.Log("stopped shooting " + e.target.name);
+        }
     }
 }

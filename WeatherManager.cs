@@ -8,15 +8,15 @@ public class WeatherManager : MonoBehaviour, IGameManager{
 
     public ManagerStatus status { get; private set; }
 
-    private NetworkService _network;
+    private NetworkService _weatherService;
     public float cloudValue { get; private set; }
 
     public void Startup(NetworkService service)
     {
         Debug.Log("Weather manager starting...");
 
-        _network = service;
-        StartCoroutine(_network.GetWeatherJSON(OnJSONDataLoaded));
+        _weatherService = service;
+        StartCoroutine(_weatherService.GetWeatherJSON(OnJSONDataLoaded));
 
         status = ManagerStatus.Initializing;
     }
@@ -44,7 +44,7 @@ public class WeatherManager : MonoBehaviour, IGameManager{
 
     public void LogWeather(string name)
     {
-        StartCoroutine(_network.LogWeather(name, cloudValue, OnLogged));
+        StartCoroutine(_weatherService.LogWeather(name, cloudValue, OnLogged));
     }
 
     private void OnLogged(string response)

@@ -34,9 +34,9 @@ public class PickupLogic : VRTK_InteractableObject
         Pickup.SetActive(false);
     }
 
-    public virtual void ChangeMaterial (bool gazed)
+    public virtual void ChangeMaterial (bool change)
     {
-        if (gazed)
+        if (change)
         {
             //List<Material> materials = new List<Material>(Pickup.GetComponent<Renderer>().materials);
             //materials.Add(GazedMaterial);
@@ -75,18 +75,7 @@ public class PickupLogic : VRTK_InteractableObject
     
     public static void ResetScene()
     {
-        //print("reset scene");
-        //var tableScene = GameObject.Find("TableScene");
-        //var officeScene = GameObject.Find("OfficeScene");
-        //var controller = GameObject.Find("Controller");
-        //var gameManagers = GameObject.Find("GameManagers");
-
-        //Destroy(tableScene);
-        //Destroy(officeScene);
-        //Destroy(controller);
-        //Destroy(gameManagers);
-
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name); //TODO: fix the reset crash problem
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); //TODO: fix the reset crash problem
     }
 
     public virtual IEnumerator PlayOpenAndSpeech()
@@ -98,11 +87,19 @@ public class PickupLogic : VRTK_InteractableObject
     public virtual float PlayOpenSound()
     {
         var source = gameObject.GetComponent<AudioSource>();
-        source.enabled = true;
-        source.clip = OpenSound;
-        source.Play();
-        print("play open sound: " + OpenSound.length);
-        return OpenSound.length;
+        if (source)
+        {
+            source.enabled = true;
+            source.clip = OpenSound;
+            source.Play();
+            print("play open sound: " + OpenSound.length);
+            return OpenSound.length;
+        }
+        else
+        {
+            return 0;
+        }
+        
     }
 
     public virtual void PlaySpeech()
