@@ -3,13 +3,14 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using MiniJSON;
+using Newtonsoft.Json;
 
 public class WeatherManager : MonoBehaviour, IGameManager{
 
     public ManagerStatus status { get; private set; }
 
     private NetworkService _weatherService;
-    public float cloudValue { get; private set; }
+    public WeatherModel weather;
 
     public void Startup(NetworkService service)
     {
@@ -23,13 +24,10 @@ public class WeatherManager : MonoBehaviour, IGameManager{
 
     private void OnJSONDataLoaded(string data)
     {
-        Dictionary<string, object> dict;
-        dict = Json.Deserialize(data) as Dictionary<string, object>;
+        weather = new WeatherModel();
+        weather = JsonConvert.DeserializeObject<WeatherModel>(data);
 
-        Dictionary<string, object> clouds = (Dictionary<string, object>) dict["clouds"];
-        cloudValue = (long)clouds["all"] / 100f;
-
-        Debug.Log("cloud value: " + cloudValue);
+        Debug.Log("cloud value: " + weather.clouds.all);
         Messenger.Broadcast(GameEvent.WEATHER_UPDATED);
 
         status = ManagerStatus.Started;
@@ -44,7 +42,7 @@ public class WeatherManager : MonoBehaviour, IGameManager{
 
     public void LogWeather(string name)
     {
-        StartCoroutine(_weatherService.LogWeather(name, cloudValue, OnLogged));
+        StartCoroutine(_weatherService.LogWeather(name, weather.clouds.all, OnLogged));
     }
 
     private void OnLogged(string response)

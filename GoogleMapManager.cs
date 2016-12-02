@@ -39,7 +39,7 @@ public class GoogleMapManager : MonoBehaviour, IGameManager {
         }
         StartCoroutine(_mapService.RefreshGoogleMap(autoLocateCenter, centerLocation, zoom, mapType, size, doubleResolution, markers, paths, OnMapRefreshed));
 
-        status = ManagerStatus.Started;
+        
     }
 
     private void OnMapRefreshed(Texture2D mapTexure)
@@ -49,18 +49,17 @@ public class GoogleMapManager : MonoBehaviour, IGameManager {
         Debug.Log(mapTexure.ToString());
         PlaceMarkers();
         Messenger.Broadcast(GameEvent.GOOGLEMAP_UPDATED);
-        //GetComponent<Renderer>().material.mainTexture = req.texture;
-        //gameObject.GetComponent<Markerplacer>().PlaceMarkers();
+
+        status = ManagerStatus.Started;
     }
 
+    //Calculating Marker Pixel Positions to be accessed by controller
     public void PlaceMarkers()
     {
-
         var tileSize = doubleResolution ? size : size / 2;
         Debug.Log("marker size: " + markers.Length);
         markerPositionsPix = new List<Vector2>();
-
-        //Calculating Marker Pixel Positions
+        
         foreach (var marker in markers)
         {
             foreach (var location in marker.locations)

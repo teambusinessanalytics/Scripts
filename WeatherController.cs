@@ -2,7 +2,8 @@
 using System.Collections;
 
 
-public class WeatherController : MonoBehaviour {
+public class WeatherController : MonoBehaviour
+{
 
     public bool render;
     public GameObject dataContainer;
@@ -13,7 +14,7 @@ public class WeatherController : MonoBehaviour {
     private Light sun;
 
     private float _fullIntensity;
-    
+
     void Awake()
     {
         Messenger.AddListener(GameEvent.WEATHER_UPDATED, OnWeatherUpdated);
@@ -28,19 +29,20 @@ public class WeatherController : MonoBehaviour {
 
     private void OnWeatherUpdated()
     {
-        if(render)
-        SetOvercast(Managers.Weather.cloudValue);
+        if (render)
+            SetOvercast(Managers.Weather.weather.clouds.all / 100f);
 
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         if (sun)
         {
             _fullIntensity = sun.intensity;
         }
     }
-	
+
 
     private void SetOvercast(float value)
     {
@@ -52,7 +54,7 @@ public class WeatherController : MonoBehaviour {
 
         var counter = 0.1f;
         var position = dataContainer.transform.position;
-        
+
         while (counter < value)
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -67,7 +69,7 @@ public class WeatherController : MonoBehaviour {
             //cube.GetComponent<VRTK.VRTK_InteractableObject>().touchHighlightColor = Color.green;
             //cube.GetComponent<VRTK.VRTK_InteractableObject>().detachThreshold = 2000;
             cube.transform.localScale = cube.transform.localScale * .5f;
-            cube.transform.position = new Vector3(position.x+ Random.Range(-1f, 1f) * 5, position.y+ Random.Range(-1f, 1f) * 5, position.z+Random.Range(-1f, 1f) * 5);
+            cube.transform.position = new Vector3(position.x + Random.Range(-1f, 1f) * 5, position.y + Random.Range(-1f, 1f) * 5, position.z + Random.Range(-1f, 1f) * 5);
             counter = counter + 0.01f;
         }
 
